@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "title": "Vice Coast palette theme",
+    "description": "Paints the interface from the GTA VI key art: frame violet, the sunset sweep and warm paper, in a night palette and a daylight postcard palette, with matching code and diff colours. Restore the stock palette or turn off the avatar frame in General settings."
+  },
+  "row": {
+    "title": "Vice Coast theme",
+    "description": "Colours taken from the GTA VI key art — violet night surfaces, the sunset sweep only on reasoning and the send key, semantics unchanged. Your avatar is matted off its blue background and stands on the same sunset."
+  },
+  "preset": {
+    "label": "Palette",
+    "vice": "Vice Coast",
+    "stock": "Stock"
+  }
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="15" fill="#150420"/>
+  <defs>
+    <linearGradient id="vc" x1="10" y1="46" x2="54" y2="10" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF2E8F"/>
+      <stop offset=".55" stop-color="#FF5F55"/>
+      <stop offset="1" stop-color="#FFA24A"/>
+    </linearGradient>
+    <clipPath id="panel"><rect x="9" y="9" width="46" height="46" rx="7"/></clipPath>
+  </defs>
+  <g clip-path="url(#panel)">
+    <rect x="9" y="9" width="46" height="46" fill="url(#vc)"/>
+    <rect x="9" y="36" width="46" height="19" fill="#1D082B"/>
+    <rect x="9" y="35.2" width="46" height="1.2" fill="#FBF7F6" opacity=".9"/>
+    <circle cx="32" cy="30" r="6.4" fill="#FBF7F6" opacity=".92"/>
+    <circle cx="32" cy="30" r="10.6" stroke="#FBF7F6" stroke-opacity=".28" stroke-width="1"/>
+    <rect x="14" y="44" width="12" height="1.6" rx=".8" fill="#58E6D6" opacity=".75"/>
+    <rect x="30" y="44" width="7" height="1.6" rx=".8" fill="#FBF7F6" opacity=".35"/>
+  </g>
+  <rect x="9" y="9" width="46" height="46" rx="7" stroke="#FFD9C6" stroke-opacity=".22"/>
+</svg>

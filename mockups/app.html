@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<meta charset="utf-8">
+<title>Vice Coast — DSH shell mockup</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  @font-face { font-family: Montserrat; font-weight: 300; font-display: block; src: url(./fonts/montserrat-light-Cvd2VjE_.woff2) format("woff2"); }
+  @font-face { font-family: Montserrat; font-weight: 400; font-display: block; src: url(./fonts/montserrat-regular-DYep38cA.woff2) format("woff2"); }
+  @font-face { font-family: Montserrat; font-weight: 500; font-display: block; src: url(./fonts/montserrat-medium-B4OyO9CN.woff2) format("woff2"); }
+
+  /* stacks copied verbatim from the shipped shell CSS */
+  :root {
+    --font-ui: var(--dsw-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif);
+    --font-code: var(--ds-font-family-code, "SF Mono", "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", Menlo, Courier, "PingFang SC", "Microsoft YaHei");
+    --content-size: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; overflow: hidden;
+    background: var(--dsw-alias-bg-base);
+    color: var(--dsw-alias-label-primary);
+    font-family: var(--font-ui); font-size: var(--content-size);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--dsw-alias-bg-document-selection); }
+
+  .shell { display: grid; grid-template-columns: 280px minmax(0, 1fr); height: 100vh; }
+
+  /* ── sidebar ───────────────────────────────────────────────────────────── */
+  .sidebar {
+    display: flex; flex-direction: column; min-height: 0;
+    padding: 6px 8px;
+    background: var(--dsw-specific-sidebar-fill);
+    border-right: .5px solid var(--dsw-alias-border-l3);
+  }
+  .logo-row { height: 60px; display: flex; align-items: center; gap: 8px; padding: 8px 0 8px 8px; }
+  /* the owner's logo: blue background matted out, character standing on the sunset plate */
+  .mark {
+    width: 24px; height: 24px; flex: none; position: relative;
+    border-radius: 8px; overflow: hidden;
+    background: var(--vc-sunset);
+    box-shadow: inset 0 0 0 .5px var(--dsw-alias-border-l3);
+  }
+  .mark img {
+    position: absolute; left: 4%; bottom: 0; width: 92%; height: 97%;
+    object-fit: contain; object-position: bottom center; display: block;
+  }
+  /* the stock side must not borrow our matte or our plate */
+  :root[data-theme^="stock"] .mark { background: #34343A; box-shadow: none; }
+  :root[data-theme^="stock"] .mark img { object-fit: cover; }
+  .mark::after { content: ""; position: absolute; inset: 0; border-radius: 6px;
+    box-shadow: inset 0 0 0 1px var(--dsw-alias-label-primary-inverted); opacity: .16; }
+  .brand-name { font-size: 18px; font-weight: 600; line-height: 24px; letter-spacing: .04em; }
+  .brand-name span { font-weight: 300; opacity: .55; }
+
+  .new-session {
+    height: 38px; margin: 0 4px 10px; padding: 8px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    border: .5px solid var(--dsw-alias-border-l3);
+    border-radius: 12px;
+    background: var(--dsw-alias-button-elevated-fill);
+    font-size: 14px; font-weight: 500; line-height: 22px;
+    color: var(--dsw-alias-label-primary);
+  }
+  .new-session .kbd { font-family: var(--font-code); font-size: 10px; color: var(--dsw-alias-label-quaternary); }
+
+  .side-scroll { flex: 1; min-height: 0; overflow: hidden; }
+  .group-label {
+    font-size: 12px; line-height: 18px; color: var(--dsw-alias-label-caption);
+    padding: 14px 8px 4px;
+  }
+  .sess {
+    height: 32px; display: flex; align-items: center; gap: 8px;
+    padding: 0 8px; border-radius: 12px;
+    color: var(--dsw-alias-label-secondary);
+  }
+  .sess .t {
+    flex: 1; min-width: 0; font-size: 14px; line-height: 22px;
+    white-space: nowrap; overflow: hidden;
+    mask-image: linear-gradient(90deg, #000 calc(100% - 12px), transparent);
+  }
+  .sess .m { font-size: 12px; line-height: 20px; color: var(--dsw-alias-label-tertiary); flex: none; }
+  .sess.selected { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-label-primary); }
+  .sess.selected .t { font-weight: 500; }
+  .sess .run { width: 6px; height: 6px; border-radius: 50%; background: var(--dsw-alias-state-business-primary); flex: none; }
+  .ws { height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px;
+    border-radius: 12px; font-family: var(--font-code); font-size: 12.5px; color: var(--dsw-alias-label-tertiary); }
+  .ws .fold { font-family: var(--font-ui); color: var(--dsw-alias-label-quaternary); }
+
+  .side-foot { flex: none; display: flex; align-items: center; gap: 9px; padding: 8px 8px 6px; }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; flex: none;
+    background: linear-gradient(150deg, var(--dsw-alias-state-business-primary), var(--dsw-alias-brand-primary));
+    display: grid; place-items: center; font-size: 11px; font-weight: 600;
+    color: var(--dsw-alias-label-primary-inverted); }
+  .side-foot .who { font-size: 13px; line-height: 18px; }
+  .side-foot .who small { display: block; font-size: 11px; color: var(--dsw-alias-label-quaternary); }
+  .spacer { flex: 1; }
+
+  /* ── centre column ─────────────────────────────────────────────────────── */
+  .center { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--dsw-alias-bg-base); }
+  .header {
+    flex: none; min-height: 76px; padding: 10px 28px 0 20px;
+    border-bottom: .5px solid var(--dsw-alias-border-l3);
+  }
+  .crumbs { display: flex; align-items: center; gap: 2px; min-height: 30px; }
+  .crumb {
+    font-size: 14px; line-height: 20px; padding: 4px 8px; border-radius: 12px;
+    color: var(--dsw-alias-label-tertiary);
+    max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .crumb.cur { color: var(--dsw-alias-label-primary); font-weight: 500; }
+  .sep { font-size: 14px; line-height: 20px; color: var(--dsw-alias-label-caption); }
+  .head-tools { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px;
+    border-radius: 999px; border: .5px solid var(--dsw-alias-border-l2);
+    font-size: 12px; color: var(--dsw-alias-label-tertiary);
+  }
+  .chip b { font-weight: 500; color: var(--dsw-alias-label-secondary); }
+  .ib { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center;
+    color: var(--dsw-alias-label-tertiary); }
+  .tabs { display: flex; gap: 32px; margin-top: 10px; padding-left: 8px; min-height: 25px; }
+  .tab {
+    display: flex; align-items: center; min-height: 35px; padding: 10px 10px 9px;
+    font-size: 13px; font-weight: 500; line-height: 16px; color: var(--dsw-alias-label-tertiary);
+    position: relative;
+  }
+  .tab.active { color: var(--dsw-alias-state-business-primary); }
+  .tab.active::after {
+    content: ""; position: absolute; left: 10px; right: 10px; bottom: 2px;
+    height: 2px; border-radius: 2px; background: currentColor;
+  }
+
+  /* ── chat ──────────────────────────────────────────────────────────────── */
+  .chat { flex: 1; min-height: 0; overflow: hidden; padding: 16px 32px; }
+  .column { max-width: 845px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+
+  .user-stack { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .bubble {
+    max-width: min(593px, 82%);
+    background: var(--dsw-specific-bubble);
+    color: var(--dsw-alias-label-primary);
+    border-radius: 20px; padding: 10px 16px;
+    font-size: 14px; line-height: 22px;
+  }
+
+  .running-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; line-height: 22px;
+    color: var(--dsw-alias-label-deep-diving);
+  }
+  .running-row .glow {
+    font-size: 12px; font-weight: 500;
+    background: var(--dsw-alias-label-deep-diving-shimmer);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .running-row .t { font-family: var(--font-code); font-size: 11px; color: var(--dsw-alias-label-quaternary); }
+
+  .prose { font-size: 14px; line-height: 24px; color: var(--dsw-alias-label-primary); }
+  .prose p { margin: 0 0 16px; }
+  .prose p:last-child { margin-bottom: 0; }
+  code {
+    font-family: var(--font-code); font-size: .875em;
+    border: .5px solid var(--dsw-alias-border-l1); border-radius: 8px; padding: 0 5px;
+    background: var(--dsw-alias-markdown-inline-code); color: var(--dsw-alias-label-primary);
+  }
+  strong { font-weight: 600; }
+  a { color: var(--dsw-alias-link); font-weight: 500; text-decoration: none; }
+
+  /* tool row + io card (ui-trajectory / ui-tool anatomy) */
+  .tool { display: flex; flex-direction: column; }
+  .tool-title { display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 24px; }
+  .tool-title .name { color: var(--dsw-alias-label-primary); }
+  .tool-title .arg { font-family: var(--font-code); font-size: 12px; color: var(--dsw-alias-label-secondary); }
+  .tool-title .dot { width: 2px; height: 2px; border-radius: 1px; background: var(--dsw-alias-label-caption); margin: 0 8px 0 0; }
+  .tool-title .status { display: inline-flex; align-items: center; gap: 5px; font-size: 12px;
+    color: var(--dsw-alias-state-success-primary); }
+  .tool-title .status .g { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .tool-title .stat { margin-left: auto; display: flex; gap: 6px;
+    font-family: var(--font-code); font-size: 11px; }
+  .stat .ins { color: var(--dsw-alias-file-diff-added-marker); }
+  .stat .rem { color: var(--dsw-alias-file-diff-deleted-marker); }
+
+  .io {
+    margin: 4px 0 4px 4px;
+    border: .5px solid var(--dsw-alias-border-l1); border-radius: 16px;
+    background: var(--dsw-alias-markdown-code-block);
+    font-family: var(--font-code); font-size: 12px; line-height: 19px;
+    overflow: hidden;
+  }
+  .io-grid { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 14px; padding: 12px 16px; }
+  .io-grid .lab { color: var(--dsw-alias-label-caption); font-family: var(--font-ui); font-size: 12px; }
+  .io-grid .val { color: var(--dsw-alias-label-secondary); white-space: pre-wrap; }
+  .io-grid .val .ok { color: var(--dsw-alias-state-success-primary); }
+  .io-grid .val .num { color: var(--shiki-token-constant); }
+  .io-grid .val .dim { color: var(--dsw-alias-label-quaternary); }
+  .io-div { height: .5px; background: var(--dsw-alias-border-l2); }
+
+  .dl { display: flex; gap: 10px; padding: 0 16px; }
+  .dl .n { width: 22px; text-align: right; color: var(--dsw-alias-label-quaternary); flex: none; }
+  .dl .mk { width: 8px; flex: none; color: var(--dsw-alias-label-quaternary); }
+  .dl .code-line { white-space: pre; color: var(--dsw-alias-label-secondary); }
+  .dl.plus { background: var(--dsw-alias-file-diff-added-bg); }
+  .dl.minus { background: var(--dsw-alias-file-diff-deleted-bg); }
+  .dl.plus .mk { color: var(--dsw-alias-file-diff-added-marker); }
+  .dl.minus .mk { color: var(--dsw-alias-file-diff-deleted-marker); }
+
+  .bullets { margin: 0; padding: 0 0 0 18px; }
+  .bullets li { margin-bottom: 4px; }
+  .bullets li::marker { color: var(--dsw-alias-brand-primary); }
+
+  .turn-tail { font-size: 12px; line-height: 20px; color: var(--dsw-alias-label-caption); }
+  .plan {
+    border: .5px solid var(--dsw-alias-border-l2); border-radius: 16px;
+    background: var(--dsw-alias-bg-layer-1); padding: 10px 14px 11px;
+  }
+  .plan-head { display: flex; align-items: baseline; gap: 8px; padding-bottom: 8px;
+    border-bottom: .5px solid var(--dsw-alias-border-l1);
+    font-size: 12px; color: var(--dsw-alias-label-tertiary); }
+  .plan-head b { font-weight: 500; color: var(--dsw-alias-label-secondary); }
+  .plan-head .count { font-family: var(--font-code); font-size: 11px; color: var(--dsw-alias-label-quaternary); }
+  .pi { display: flex; align-items: flex-start; gap: 9px; padding-top: 6px;
+    font-size: 13px; line-height: 20px; color: var(--dsw-alias-label-primary); }
+  .pi .ic { width: 13px; height: 13px; margin-top: 3px; border-radius: 50%; flex: none;
+    border: 1.5px solid var(--dsw-alias-border-l4); }
+  .pi.done { color: var(--dsw-alias-label-tertiary); text-decoration: line-through;
+    text-decoration-color: var(--dsw-alias-border-l3); }
+  .pi.done .ic { border-color: var(--dsw-alias-state-done-primary); background: var(--dsw-alias-state-done-primary); }
+  .pi.run .ic { border-color: var(--dsw-alias-state-business-primary);
+    box-shadow: 0 0 0 3px var(--dsw-alias-state-business-tertiary); }
+  .pi .tag { margin-left: 6px; font-size: 11px; color: var(--dsw-alias-label-quaternary); }
+
+  /* ── composer ──────────────────────────────────────────────────────────── */
+  .seat {
+    flex: none; padding: 0 16px 4px;
+    background: linear-gradient(180deg, transparent 0, var(--dsw-alias-bg-base) 36px);
+  }
+  .composer-card {
+    max-width: 877px; margin: 0 auto; padding-top: 8px;
+    border-radius: 28px;
+    background: var(--dsw-specific-input-major);
+    box-shadow: 0 0 0 .5px var(--dsw-alias-border-l2), 0 4px 16px 0 var(--dsw-alias-bg-mask-2), 0 0 24px 0 var(--dsw-alias-bg-mask-1);
+  }
+  .input-row { min-height: 36px; padding: 4px 8px 0 14px; display: flex; align-items: center;
+    font-size: 14px; line-height: 24px; }
+  .placeholder { color: var(--dsw-alias-label-caption); }
+  .caret { width: 1.5px; height: 18px; background: var(--dsw-alias-state-business-primary); margin-right: 1px; }
+  .bottom-row { display: flex; align-items: center; gap: 12px; padding: 2px 8px 6px; }
+  .attach { width: 28px; height: 28px; border-radius: 999px; background: var(--dsw-specific-selector);
+    display: grid; place-items: center; color: var(--dsw-alias-label-secondary); font-size: 15px; line-height: 1; }
+  .model { height: 28px; max-width: 220px; display: inline-flex; align-items: center; gap: 5px;
+    border-radius: 8px; padding: 0 6px;
+    font-size: 13px; font-weight: 500; line-height: 20px; color: var(--dsw-alias-label-secondary); }
+  .model .chev { font-size: 9px; color: var(--dsw-alias-label-quaternary); }
+  .send { width: 34px; height: 34px; border-radius: 999px; transform: translateY(-2px);
+    background: var(--dsw-alias-button-info-fill);
+    display: grid; place-items: center; color: #fff; }
+  .dock { max-width: 877px; margin: 6px auto 0; min-height: 22px;
+    display: flex; justify-content: center; gap: 10px;
+    font-size: 11px; color: var(--dsw-alias-label-quaternary); }
+  .dock .s { color: var(--dsw-alias-border-l3); }
+</style>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="logo-row">
+      <div class="mark"><img src="./logo-cut.png" alt=""></div>
+      <div class="brand-name">DeepSeek <span>Harness</span></div>
+    </div>
+
+    <div class="new-session"><span>新建会话</span><span class="kbd">⌘N</span></div>
+
+    <div class="side-scroll">
+      <div class="group-label">今天</div>
+
+      <div class="sess selected"><span class="run"></span><span class="t">为 DSH 工作台做一套 GTA6 配色主题</span><span class="m">41s</span></div>
+      <div class="sess"><span class="t">修复 sandbox 写入权限导致的 EACCES</span><span class="m">2m</span></div>
+      <div class="sess"><span class="t">把 apex 表格的闪退复现出来</span><span class="m">1h</span></div>
+      <div class="sess"><span class="t">trailer-cutting 素材清单对照</span><span class="m">2h</span></div>
+      <div class="sess"><span class="t">给 notion 写季度复盘模板</span><span class="m">昨天</span></div>
+      <div class="sess"><span class="t">实验：把 todo 列表接进头部</span><span class="m">周三</span></div>
+
+      <div class="group-label">工作区</div>
+      <div class="ws"><span class="fold">▸</span> ~/AI+/dsh_workspace</div>
+      <div class="ws"><span class="fold">▸</span> ~/AI+/trailer_cut</div>
+    </div>
+
+    <div class="side-foot">
+      <div class="avatar">PY</div>
+      <div class="who">pyz<small>本地 · 8 个会话</small></div>
+      <div class="spacer"></div>
+      <div class="ib">⚙</div>
+    </div>
+  </aside>
+
+  <main class="center">
+    <header class="header">
+      <div class="crumbs">
+        <span class="crumb">~/AI+</span><span class="sep">/</span>
+        <span class="crumb">dsh_workspace</span><span class="sep">/</span>
+        <span class="crumb cur">为 DSH 工作台做一套 GTA6 配色主题</span>
+        <span class="head-tools">
+          <span class="chip"><b>Turn 3</b> · 41s</span>
+          <span class="ib">⤴</span><span class="ib">⋯</span>
+        </span>
+      </div>
+      <div class="tabs">
+        <span class="tab active">对话</span>
+        <span class="tab">轨迹</span>
+      </div>
+    </header>
+
+    <div class="chat">
+      <div class="column">
+
+        <div class="user-stack">
+          <div class="bubble">按官方主视觉做一套暗色主题，别做成赛博朋克霓虹 —— 它是白日明信片，不是 80 年代合成波。</div>
+        </div>
+
+        <div class="running-row">
+          <span class="glow">正在推演三原语的取值</span><span class="t">7.4s</span>
+        </div>
+
+        <div class="prose">
+          <p>画框是深紫而不是黑：<code>#1E032C</code>，L* 只有 5，a* 却到 21 —— 被洋红压过的紫。暗色底直接沿用，界面就带着海报的画框感。</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-title">
+            <span class="name">Bash</span><span class="dot"></span>
+            <span class="arg">node palette.mjs</span>
+            <span class="spacer"></span>
+            <span class="status"><span class="g"></span>已退出 0</span>
+          </div>
+          <div class="io">
+            <div class="io-grid">
+              <span class="lab">输出</span>
+              <span class="val">
+=== dark ===
+<span class="ok">ok</span>   text1 / base           <span class="num">17.79</span>:1
+<span class="ok">ok</span>   pink / base             <span class="num">6.87</span>:1
+<span class="ok">ok</span>   bubble / bubble text   <span class="num">14.84</span>:1
+<span class="dim">…  14 项全部达标</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool">
+          <div class="tool-title">
+            <span class="name">Edit</span><span class="dot"></span>
+            <span class="arg">palette.mjs</span>
+            <span class="spacer"></span>
+            <span class="stat"><span class="ins">+2</span><span class="rem">−2</span></span>
+          </div>
+          <div class="io">
+            <div class="dl minus"><span class="n">42</span><span class="mk">−</span><span class="code-line">  brand:  p.neutralInk,</span></div>
+            <div class="dl minus"><span class="n">43</span><span class="mk">−</span><span class="code-line">  accent: p.blue500,</span></div>
+            <div class="dl plus"><span class="n">44</span><span class="mk">+</span><span class="code-line">  brand:  p.pink,      // #FF5CA8</span></div>
+            <div class="dl plus"><span class="n">45</span><span class="mk">+</span><span class="code-line">  accent: p.aqua,      // #58E6D6</span></div>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p style="margin-bottom:10px">两套配色都过 AA：暗色主读数 <strong>17.8:1</strong>，亮色 <strong>16.8:1</strong>。日落渐变只出现在两处 —— 思考 shimmer 与发送键。</p>
+          <ul class="bullets">
+            <li>语义色不跟主题漂移：红仍是红，琥珀仍是琥珀</li>
+            <li>自己的话是唯一暖色面：气泡底色取自海报的落日</li>
+          </ul>
+        </div>
+
+        <div class="turn-tail">本轮 41s · 4 次工具调用 · 2 个文件改动</div>
+
+        <div class="plan">
+          <div class="plan-head"><b>计划</b><span class="spacer"></span><span class="count">2 / 3</span></div>
+          <div class="pi done"><span class="ic"></span><span>采样官方主视觉的三原语</span></div>
+          <div class="pi done"><span class="ic"></span><span>写暗色 / 亮色两套令牌并跑 WCAG</span></div>
+          <div class="pi run"><span class="ic"></span><span>接进 DSH 主题槽位，出效果图</span><span class="tag">进行中</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seat">
+      <div class="composer-card">
+        <div class="input-row"><span class="caret"></span><span class="placeholder">继续，把亮色模式也做完…</span></div>
+        <div class="bottom-row">
+          <span class="attach">+</span>
+          <span class="model">DeepSeek V4 <span class="chev">▾</span></span>
+          <span class="spacer"></span>
+          <div class="send">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <path d="M7.5 12.4V3.1M7.5 3.1L3.4 7.2M7.5 3.1l4.1 4.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="dock"><span>Enter 发送</span><span class="s">/</span><span>Shift + Enter 换行</span><span class="s">/</span><span>Vice Coast · 罪恶海岸</span></div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const t = new URLSearchParams(location.search).get('theme');
+  if (t) document.documentElement.dataset.theme = t;
+</script>
+</html>

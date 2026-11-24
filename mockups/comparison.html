@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>before / after</title>
+<style>
+  @font-face { font-family: Montserrat; font-weight: 400; src: url(./fonts/montserrat-regular-DYep38cA.woff2) format("woff2"); }
+  @font-face { font-family: Montserrat; font-weight: 500; src: url(./fonts/montserrat-medium-B4OyO9CN.woff2) format("woff2"); }
+  :root { --ink: #F8F2F7; --dim: #A38FB4; --line: #FFD9C626; --pink: #FF5CA8; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; width: 1600px; height: 620px; overflow: hidden;
+    background: #0D0116; color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { padding: 30px 32px 0; }
+  .cols { display: flex; gap: 24px; }
+  .col { width: 752px; }
+  .lab { display: flex; align-items: baseline; gap: 10px; padding: 0 2px 10px; }
+  .lab .k { font-family: Montserrat, sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .12em; color: var(--dim); }
+  .lab .n { font-size: 15px; font-weight: 500; }
+  .lab .n.on { color: var(--pink); }
+  .lab .meta { margin-left: auto; font-size: 11.5px; color: var(--dim); font-variant-numeric: tabular-nums; }
+  .shot { width: 752px; height: 470px; display: block; border-radius: 10px;
+    outline: 1px solid var(--line); }
+  .foot { display: flex; align-items: baseline; gap: 16px; padding: 18px 2px 0; }
+  .foot .a { font-size: 12.5px; color: var(--dim); }
+  .foot .b { font-size: 12.5px; color: var(--ink); opacity: .82; margin-left: auto; }
+</style>
+
+<div class="wrap">
+  <div class="cols">
+    <div class="col">
+      <div class="lab">
+        <span class="k">STOCK</span><span class="n">原厂暗色</span>
+        <span class="meta">--dsw-alias-bg-base #151517</span>
+      </div>
+      <img class="shot" src="_stock.png">
+    </div>
+    <div class="col">
+      <div class="lab">
+        <span class="k">VICE COAST</span><span class="n on">罪恶海岸 · 夜驾</span>
+        <span class="meta">--dsw-alias-bg-base #150420</span>
+      </div>
+      <img class="shot" src="01-night.png">
+    </div>
+  </div>
+  <div class="foot">
+    <span class="a">同一版式、同一字号、同一套 token 槽位 —— 只有颜色层被替换。</span>
+    <span class="b">Stock 预设可一键还原左侧</span>
+  </div>
+</div>
+</html>

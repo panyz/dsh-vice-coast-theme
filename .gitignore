@@ -1,0 +1,26 @@
+# personal brand mark: never publish someone's avatar
+assets/logo-cut.png
+assets/logo-personal.png
+mockups/logo.png
+mockups/05-logo.png
+mockups/logo-sheet.html
+
+# downloaded reference art and vendor dumps stay local
+research/ref-keyart.jpg
+research/ref-logo.png
+research/stock-tokens.json
+research/_tmp/
+
+# scratch
+node_modules/
+.DS_Store
+mockups/_stock.png
+assets/_logo-default.html
+*.log
+
+# personal matte figure (uses the private avatar)
+tools/gen-logo-sheet.mjs
+tools/gen-default-logo.mjs
+
+# local research scratch (official art + vendor dumps)
+research/

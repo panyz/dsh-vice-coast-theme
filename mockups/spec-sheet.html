@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<title>罪恶海岸 · 主题规格</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:300;font-display:block;src:url('fonts/montserrat-light-Cvd2VjE_.woff2') format('woff2')}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:400;font-display:block;src:url('fonts/montserrat-regular-DYep38cA.woff2') format('woff2')}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:500;font-display:block;src:url('fonts/montserrat-medium-B4OyO9CN.woff2') format('woff2')}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1600px;height:1200px;background:var(--dsw-alias-bg-base);overflow:hidden}
+body{
+  font-family:'Montserrat','PingFang SC',system-ui,sans-serif;
+  color:var(--dsw-alias-label-primary);
+  -webkit-font-smoothing:antialiased;
+  font-synthesis:none;
+  font-variant-numeric:tabular-nums;
+}
+/* radii below are the shell's own :root literals (xs 4 / sm 8 / md 12 / lg 16).
+   They are not alias tokens: the theme changes colour, never shape. */
+.sheet{width:1600px;height:1200px;padding:64px;display:flex;flex-direction:column}
+
+/* ── shared rhythm ─────────────────────────────────────────────── */
+.rule{height:1px;background:var(--dsw-alias-border-l1);flex:none}
+.rule.a{margin:17px 0}
+.rule.b{margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.c5{grid-column:span 5}
+.c7{grid-column:span 7}
+
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:11px}
+.sechead h2{font-size:17px;font-weight:500;letter-spacing:.05em;line-height:1.2;color:var(--dsw-alias-label-primary)}
+.sechead .note{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--dsw-alias-label-secondary);white-space:nowrap}
+
+/* ── masthead ──────────────────────────────────────────────────── */
+.mast{display:flex;flex-direction:column;flex:none}
+.mast-top{display:flex;align-items:flex-start;justify-content:space-between}
+.wordmark{font-size:64px;font-weight:300;line-height:.96;letter-spacing:.055em;color:var(--dsw-alias-label-primary)}
+.version{font-size:12px;font-weight:400;letter-spacing:.06em;color:var(--dsw-alias-label-secondary);padding-top:5px}
+.mast-sub{display:flex;align-items:baseline;justify-content:space-between;gap:40px;margin-top:13px}
+.tagline{font-size:17px;font-weight:400;letter-spacing:.03em;color:var(--dsw-alias-label-secondary)}
+.provenance{font-size:12px;font-weight:400;letter-spacing:.015em;color:var(--dsw-alias-label-secondary);white-space:nowrap}
+.provenance b{font-weight:400;color:var(--dsw-alias-label-primary);letter-spacing:.03em}
+
+/* ── primitives: the sampled anchors ───────────────────────────── */
+.prims{display:flex;flex-direction:column}
+.prim-list{display:flex;flex-direction:column;gap:14px}
+.prim{display:flex;align-items:flex-start;gap:18px}
+.chip{width:96px;height:64px;flex:none;box-shadow:inset 0 0 0 1px var(--dsw-alias-border-l2)}
+.prim-txt{flex:1;min-width:0;padding-top:1px}
+.prim-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.prim-name{font-size:15px;font-weight:500;letter-spacing:.04em;color:var(--dsw-alias-label-primary)}
+.prim-val{font-size:15px;font-weight:400;letter-spacing:.02em;color:var(--dsw-alias-label-primary);white-space:nowrap}
+.prim-val i{font-style:normal;color:var(--dsw-alias-label-tertiary);margin:0 6px}
+.prim-meta{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:6px;font-size:13px;font-weight:400;color:var(--dsw-alias-label-tertiary);letter-spacing:.02em}
+.prim-meta .tk{white-space:nowrap}
+
+/* ── sunset: the page's one gradient plane ─────────────────────── */
+.sunset{display:flex;flex-direction:column}
+.bar{height:128px;background:var(--vc-sunset);flex:none}
+.ticks{position:relative;height:16px;margin-top:8px;flex:none}
+.tick{position:absolute;top:0;font-size:12px;line-height:16px;letter-spacing:.02em;color:var(--dsw-alias-label-secondary);white-space:nowrap}
+.tick::before{content:"";position:absolute;top:-8px;width:1px;height:6px;background:var(--dsw-alias-border-l4)}
+.tick.s{left:0}
+.tick.s::before{left:0}
+.tick.m{left:52%;transform:translateX(-50%)}
+.tick.m::before{left:50%}
+.tick.e{right:0;text-align:right}
+.tick.e::before{right:0}
+.tick b{font-weight:500;color:var(--dsw-alias-label-primary);letter-spacing:.04em;margin-left:7px}
+.uses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px;margin-top:17px}
+.use{border-top:1px solid var(--dsw-alias-border-l2);padding-top:10px}
+.use h3{font-size:13px;font-weight:500;letter-spacing:.05em;color:var(--dsw-alias-label-primary)}
+.use p{font-size:12px;font-weight:400;line-height:1.5;color:var(--dsw-alias-label-secondary);margin-top:3px}
+
+/* ── token ledger ──────────────────────────────────────────────── */
+/* light-pane:start */
+.lp{
+  --dsw-alias-bg-base:#FBF7F6;
+  --dsw-alias-bg-layer-1:#FFFFFF;
+  --dsw-alias-bg-layer-2:#F4EDF7;
+  --dsw-alias-bg-layer-3:#EBE2F4;
+  --dsw-alias-label-primary:#21102E;
+  --dsw-alias-label-secondary:#54415E;
+  --dsw-alias-label-tertiary:#736180;
+  --dsw-alias-label-quaternary:#9B8CA6;
+  --dsw-alias-brand-primary:#D1116E;
+  --dsw-alias-link:#087069;
+  --dsw-alias-state-warn-primary:#9A5600;
+  --dsw-alias-state-error-primary:#C1213A;
+  --dsw-alias-state-success-primary:#0B7442;
+  --dsw-alias-state-done-primary:#6B3BC2;
+}
+/* light-pane:end */
+.ledger{
+  --ink1:var(--dsw-alias-label-primary);
+  --ink2:var(--dsw-alias-label-secondary);
+  --ink3:var(--dsw-alias-label-tertiary);
+  --hair:var(--dsw-alias-border-l1);
+  --ring:var(--dsw-alias-border-l2);
+}
+.lfam-row,.lgroup{display:flex;gap:26px}
+.rail{width:34px;flex:none}
+.lcols{flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:26px}
+.lfam-row{align-items:baseline;padding-bottom:5px}
+.lfam{font-size:28px;font-weight:300;line-height:1.05;letter-spacing:.02em;color:var(--ink1)}
+.lfam span{display:inline-block;margin-left:8px;font-size:13px;font-weight:400;letter-spacing:.03em;color:var(--ink3)}
+.glabel{display:block;font-size:13px;font-weight:400;line-height:20px;letter-spacing:.06em;color:var(--ink3)}
+.lrow{display:flex;align-items:center;gap:9px;height:20px;border-top:1px solid var(--hair)}
+.sw{width:12px;height:12px;flex:none;box-shadow:0 0 0 1px var(--ring)}
+.tname{font-size:12px;font-weight:400;letter-spacing:.005em;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:clip}
+.thex{margin-left:auto;font-size:12px;font-weight:400;letter-spacing:.03em;color:var(--ink1)}
+
+/* ── contrast ──────────────────────────────────────────────────── */
+.ct{display:flex;flex-direction:column}
+.ct-head,.ct-row{display:grid;grid-template-columns:128px minmax(0,1fr) minmax(0,1fr);column-gap:10px;align-items:center}
+.ct-head{padding-bottom:6px}
+.ct-head .m{font-size:12px;font-weight:400;letter-spacing:.04em;color:var(--dsw-alias-label-secondary)}
+.ct-head .m:not(.l){text-align:right}
+.ct-row{height:20px;border-top:1px solid var(--dsw-alias-border-l1)}
+.ct-row .l{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--dsw-alias-label-secondary);white-space:nowrap}
+.cell{display:flex;align-items:center;justify-content:flex-end;gap:7px}
+.ratio{font-size:13px;font-weight:400;letter-spacing:.02em;color:var(--dsw-alias-label-primary)}
+.cell .u{font-size:12px;color:var(--dsw-alias-label-secondary)}
+.badge{font-size:12px;font-weight:500;line-height:1;letter-spacing:.04em;padding:3px 5px;border-radius:4px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-fill-l2)}
+.ct-foot{margin-top:auto;padding-top:12px;font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--dsw-alias-label-secondary)}
+
+/* ── component band: the page's one bordered surface ───────────── */
+.cband{background:var(--dsw-alias-bg-layer-1);border:1px solid var(--dsw-alias-border-l1);border-radius:16px;padding:16px 24px}
+.samples{display:grid;grid-template-columns:205px minmax(0,1fr) 155px 180px 230px 175px 170px;column-gap:20px}
+.item{display:flex;flex-direction:column;min-width:0}
+.item + .item{border-left:1px solid var(--dsw-alias-border-l1);padding-left:20px}
+.sample{height:58px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.tok{display:block;min-height:50px;font-size:12px;line-height:1.4;letter-spacing:.005em;color:var(--dsw-alias-label-secondary);margin-top:8px;word-break:break-word}
+
+.bubble{align-self:flex-start;max-width:100%;background:var(--dsw-specific-bubble);color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.4;padding:8px 12px;border-radius:16px 4px 16px 16px}
+.prose{font-size:13px;line-height:1.55;color:var(--dsw-alias-label-primary);letter-spacing:.02em}
+.prose a{color:var(--dsw-alias-link);text-decoration:none;border-bottom:1px solid var(--dsw-alias-border-l2)}
+.tool{background:var(--dsw-alias-bg-layer-2);border-radius:12px;padding:7px 10px}
+.tool-h{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.dot{width:6px;height:6px;flex:none;background:var(--dsw-alias-state-business-primary);border-radius:50%}
+.tool-name{font-size:13px;font-weight:500;letter-spacing:.02em;color:var(--dsw-alias-label-primary)}
+.tool-state{margin-left:auto;font-size:12px;font-weight:500;letter-spacing:.03em;color:var(--dsw-alias-state-business-primary)}
+.tool-line{margin-top:6px;height:1px;background:var(--dsw-alias-border-l1)}
+.code{font-size:12px;font-weight:400;letter-spacing:.01em;color:var(--dsw-alias-brand-primary);background:var(--dsw-alias-markdown-inline-code);padding:3px 6px;border-radius:4px;white-space:nowrap}
+.diff{display:flex;flex-direction:column;gap:2px;font-size:12px}
+.dline{display:flex;align-items:center;gap:7px;height:19px;padding:0 6px;border-radius:4px}
+.dline .m{font-weight:500;width:8px;flex:none}
+.dline.add{background:var(--dsw-alias-code-diff-added)}
+.dline.add .m{color:var(--dsw-alias-file-diff-added-marker)}
+.dline.del{background:var(--dsw-alias-code-diff-deleted)}
+.dline.del .m{color:var(--dsw-alias-file-diff-deleted-marker)}
+.dline .t{color:var(--dsw-alias-label-secondary);letter-spacing:.01em;white-space:nowrap;overflow:hidden}
+/* the shell's only consumer of --dsw-alias-button-info-fill, and the token now
+   carries the button-grade sunset sweep; the glyph is the shell's hardcoded #fff */
+.sendkey{align-self:flex-start;background:var(--dsw-alias-button-info-fill);color:#fff;font-size:13px;font-weight:500;letter-spacing:.1em;padding:8px 15px;border-radius:12px}
+.sess{display:flex;align-items:center;gap:9px;background:var(--dsw-specific-sidebar-nav-item-active);border-radius:8px;padding:7px 10px}
+.sess-t{font-size:13px;font-weight:400;letter-spacing:.03em;color:var(--dsw-alias-label-primary)}
+
+/* ── footer ────────────────────────────────────────────────────── */
+.foot{display:flex;align-items:baseline;justify-content:space-between;gap:40px;flex:none}
+.foot p{font-size:13px;font-weight:400;letter-spacing:.03em;color:var(--dsw-alias-label-secondary)}
+.foot .files{font-size:12px;letter-spacing:.04em;color:var(--dsw-alias-label-secondary);white-space:nowrap}
+.foot .files em{font-style:normal;color:var(--dsw-alias-label-primary)}
+.foot .files i{font-style:normal;color:var(--dsw-alias-border-l4);margin:0 10px}
+
+.spring{flex:1 1 auto;min-height:0}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- masthead -->
+  <header class="mast">
+    <div class="mast-top">
+      <h1 class="wordmark">罪恶海岸</h1>
+      <span class="version">v1 · 2026-11</span>
+    </div>
+    <div class="mast-sub">
+      <p class="tagline">GTA6 色彩主题 · DSH 工作台</p>
+      <p class="provenance">取样锚点：<b>画框紫 #1E032C</b> / <b>日落渐变 #FF2E8F→#FFA24A</b> / <b>纸白 #FAF6F4</b></p>
+    </div>
+  </header>
+
+  <div class="rule a"></div>
+
+  <!-- primitives & the sweep -->
+  <section class="grid">
+    <div class="c5 prims">
+      <div class="sechead"><h2>三个原语</h2></div>
+      <div class="prim-list">
+        <div class="prim">
+          <div class="chip" style="background:#1E032C"></div>
+          <div class="prim-txt">
+            <div class="prim-top"><span class="prim-name">画框紫</span><span class="prim-val">#1E032C</span></div>
+            <div class="prim-meta"><span>暗色页底</span><span class="tk">令牌 #150420</span></div>
+          </div>
+        </div>
+        <div class="prim">
+          <div class="chip" style="background:var(--vc-sunset)"></div>
+          <div class="prim-txt">
+            <div class="prim-top"><span class="prim-name">日落渐变</span><span class="prim-val">#FF2E8F<i>·</i>#FF5F55<i>·</i>#FFA24A</span></div>
+            <div class="prim-meta"><span>唯一手势</span><span class="tk">令牌 --dsw-alias-label-deep-diving-shimmer</span></div>
+          </div>
+        </div>
+        <div class="prim">
+          <div class="chip" style="background:#FAF6F4"></div>
+          <div class="prim-txt">
+            <div class="prim-top"><span class="prim-name">纸白</span><span class="prim-val">#FAF6F4</span></div>
+            <div class="prim-meta"><span>亮色页底</span><span class="tk">令牌 #FBF7F6</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="c7 sunset">
+      <div class="sechead"><h2>日落渐变</h2><span class="note">唯一允许的渐变</span></div>
+      <div class="bar"></div>
+      <div class="ticks">
+        <span class="tick s">0%<b>#FF2E8F</b></span>
+        <span class="tick m">52%<b>#FF5F55</b></span>
+        <span class="tick e">100%<b>#FFA24A</b></span>
+      </div>
+      <div class="uses">
+        <div class="use"><h3>思考微光</h3><p>推理过程的扫光</p></div>
+        <div class="use"><h3>主操作</h3><p>只给发送键，同色相压深一档供白箭头</p></div>
+        <div class="use"><h3>其余一律纯色</h3><p>会话行、标签、次级按钮不带渐变</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule b"></div>
+
+  <!-- tokens & contrast -->
+  <section class="grid">
+    <div class="c7 ledger">
+      <div class="sechead"><h2>双模令牌</h2><span class="note">14 个令牌 ×2 明度</span></div>
+      <div class="lfam-row">
+        <span class="rail"></span>
+        <div class="lcols">
+          <span class="lfam">暗色<span>Night Drive</span></span>
+          <span class="lfam">亮色<span>Postcard</span></span>
+        </div>
+      </div>
+
+      <div class="lgroup">
+        <span class="rail"><span class="glabel">表面</span></span>
+        <div class="lcols">
+          <div class="lcol">
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-bg-base)"></span><span class="tname">--dsw-alias-bg-base</span><span class="thex">#150420</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-bg-layer-1)"></span><span class="tname">--dsw-alias-bg-layer-1</span><span class="thex">#1D082B</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-bg-layer-2)"></span><span class="tname">--dsw-alias-bg-layer-2</span><span class="thex">#250F37</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-bg-layer-3)"></span><span class="tname">--dsw-alias-bg-layer-3</span><span class="thex">#311546</span></div>
+          </div>
+          <div class="lcol lp">
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-bg-base)"></span><span class="tname">--dsw-alias-bg-base</span><span class="thex">#FBF7F6</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-bg-layer-1)"></span><span class="tname">--dsw-alias-bg-layer-1</span><span class="thex">#FFFFFF</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-bg-layer-2)"></span><span class="tname">--dsw-alias-bg-layer-2</span><span class="thex">#F4EDF7</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-bg-layer-3)"></span><span class="tname">--dsw-alias-bg-layer-3</span><span class="thex">#EBE2F4</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lgroup">
+        <span class="rail"><span class="glabel">文字</span></span>
+        <div class="lcols">
+          <div class="lcol">
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-label-primary)"></span><span class="tname">--dsw-alias-label-primary</span><span class="thex">#F8F2F7</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-label-secondary)"></span><span class="tname">--dsw-alias-label-secondary</span><span class="thex">#CDBAD8</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-label-tertiary)"></span><span class="tname">--dsw-alias-label-tertiary</span><span class="thex">#A38FB4</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-label-quaternary)"></span><span class="tname">--dsw-alias-label-quaternary</span><span class="thex">#7C6991</span></div>
+          </div>
+          <div class="lcol lp">
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-label-primary)"></span><span class="tname">--dsw-alias-label-primary</span><span class="thex">#21102E</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-label-secondary)"></span><span class="tname">--dsw-alias-label-secondary</span><span class="thex">#54415E</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-label-tertiary)"></span><span class="tname">--dsw-alias-label-tertiary</span><span class="thex">#736180</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-label-quaternary)"></span><span class="tname">--dsw-alias-label-quaternary</span><span class="thex">#9B8CA6</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lgroup">
+        <span class="rail"><span class="glabel">信号</span></span>
+        <div class="lcols">
+          <div class="lcol">
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-brand-primary)"></span><span class="tname">--dsw-alias-brand-primary</span><span class="thex">#FF5CA8</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-link)"></span><span class="tname">--dsw-alias-link</span><span class="thex">#58E6D6</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-state-warn-primary)"></span><span class="tname">--dsw-alias-state-warn-primary</span><span class="thex">#FFB65C</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-state-error-primary)"></span><span class="tname">--dsw-alias-state-error-primary</span><span class="thex">#FF5E72</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-state-success-primary)"></span><span class="tname">--dsw-alias-state-success-primary</span><span class="thex">#45D98A</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-state-done-primary)"></span><span class="tname">--dsw-alias-state-done-primary</span><span class="thex">#B98CFF</span></div>
+          </div>
+          <div class="lcol lp">
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-brand-primary)"></span><span class="tname">--dsw-alias-brand-primary</span><span class="thex">#D1116E</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-link)"></span><span class="tname">--dsw-alias-link</span><span class="thex">#087069</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-state-warn-primary)"></span><span class="tname">--dsw-alias-state-warn-primary</span><span class="thex">#9A5600</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-state-error-primary)"></span><span class="tname">--dsw-alias-state-error-primary</span><span class="thex">#C1213A</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-state-success-primary)"></span><span class="tname">--dsw-alias-state-success-primary</span><span class="thex">#0B7442</span></div>
+            <div class="lrow"><span class="sw" style="background:var(--dsw-alias-state-done-primary)"></span><span class="tname">--dsw-alias-state-done-primary</span><span class="thex">#6B3BC2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="c5 ct">
+      <div class="sechead"><h2>对比度</h2><span class="note">WCAG 2.1 实测</span></div>
+      <div class="ct-head">
+        <span class="l"></span>
+        <span class="m">暗色</span>
+        <span class="m">亮色</span>
+      </div>
+      <!-- contrast:start -->
+      <div class="ct-row"><span class="l">正文 / 页底</span><span class="cell"><span class="ratio">17.79</span><span class="u">:1</span><i class="badge">AAA</i></span><span class="cell"><span class="ratio">16.75</span><span class="u">:1</span><i class="badge">AAA</i></span></div>
+      <div class="ct-row"><span class="l">次级文字 / 页底</span><span class="cell"><span class="ratio">10.85</span><span class="u">:1</span><i class="badge">AAA</i></span><span class="cell"><span class="ratio">8.60</span><span class="u">:1</span><i class="badge">AAA</i></span></div>
+      <div class="ct-row"><span class="l">三级文字 / 页底</span><span class="cell"><span class="ratio">6.68</span><span class="u">:1</span><i class="badge">AA</i></span><span class="cell"><span class="ratio">5.26</span><span class="u">:1</span><i class="badge">AA</i></span></div>
+      <div class="ct-row"><span class="l">信号 / 页底</span><span class="cell"><span class="ratio">6.87</span><span class="u">:1</span><i class="badge">AA</i></span><span class="cell"><span class="ratio">4.91</span><span class="u">:1</span><i class="badge">AA</i></span></div>
+      <div class="ct-row"><span class="l">链接 / 页底</span><span class="cell"><span class="ratio">12.81</span><span class="u">:1</span><i class="badge">AAA</i></span><span class="cell"><span class="ratio">5.59</span><span class="u">:1</span><i class="badge">AA</i></span></div>
+      <div class="ct-row"><span class="l">错误 / 页底</span><span class="cell"><span class="ratio">6.63</span><span class="u">:1</span><i class="badge">AA</i></span><span class="cell"><span class="ratio">5.57</span><span class="u">:1</span><i class="badge">AA</i></span></div>
+      <div class="ct-row"><span class="l">警告 / 页底</span><span class="cell"><span class="ratio">11.31</span><span class="u">:1</span><i class="badge">AAA</i></span><span class="cell"><span class="ratio">5.33</span><span class="u">:1</span><i class="badge">AA</i></span></div>
+      <div class="ct-row"><span class="l">成功 / 页底</span><span class="cell"><span class="ratio">10.79</span><span class="u">:1</span><i class="badge">AAA</i></span><span class="cell"><span class="ratio">5.50</span><span class="u">:1</span><i class="badge">AA</i></span></div>
+      <div class="ct-row"><span class="l">计划 / 页底</span><span class="cell"><span class="ratio">7.72</span><span class="u">:1</span><i class="badge">AAA</i></span><span class="cell"><span class="ratio">6.51</span><span class="u">:1</span><i class="badge">AA</i></span></div>
+      <div class="ct-row"><span class="l">气泡文字 / 气泡</span><span class="cell"><span class="ratio">15.04</span><span class="u">:1</span><i class="badge">AAA</i></span><span class="cell"><span class="ratio">14.84</span><span class="u">:1</span><i class="badge">AAA</i></span></div>
+      <div class="ct-row"><span class="l">按钮文字 / 主按钮</span><span class="cell"><span class="ratio">6.84</span><span class="u">:1</span><i class="badge">AA</i></span><span class="cell"><span class="ratio">5.23</span><span class="u">:1</span><i class="badge">AA</i></span></div>
+      <p class="ct-foot">11 组全部达标，最低 4.91:1</p>
+      <!-- contrast:end -->
+    </div>
+  </section>
+
+  <div class="rule b"></div>
+
+  <!-- components -->
+  <section>
+    <div class="sechead"><h2>组件样本</h2><span class="note">暗色调色板下渲染</span></div>
+    <div class="cband">
+      <div class="samples">
+        <div class="item">
+          <div class="sample"><span class="bubble">底色换成画框紫</span></div>
+          <div class="tok">气泡<br>--dsw-specific-bubble<br>--dsw-alias-label-primary</div>
+        </div>
+        <div class="item">
+          <div class="sample"><p class="prose">夜间底色取自画框紫，信息色留给<a href="#">链接</a>。</p></div>
+          <div class="tok">--dsw-alias-label-primary<br>--dsw-alias-link</div>
+        </div>
+        <div class="item">
+          <div class="sample">
+            <div class="tool">
+              <div class="tool-h"><span class="dot"></span><span class="tool-name">Bash</span><span class="tool-state">执行中</span></div>
+              <div class="tool-line"></div>
+            </div>
+          </div>
+          <div class="tok">--dsw-alias-state-business-primary</div>
+        </div>
+        <div class="item">
+          <div class="sample"><code class="code">--dsw-alias-bg-base</code></div>
+          <div class="tok">--dsw-alias-markdown-inline-code</div>
+        </div>
+        <div class="item">
+          <div class="sample">
+            <div class="diff">
+              <div class="dline add"><span class="m">+</span><span class="t">color: "vice-coast"</span></div>
+              <div class="dline del"><span class="m">−</span><span class="t">color: "stock"</span></div>
+            </div>
+          </div>
+          <div class="tok">--dsw-alias-code-diff-added<br>--dsw-alias-code-diff-deleted</div>
+        </div>
+        <div class="item">
+          <div class="sample"><span class="sendkey">发送</span></div>
+          <div class="tok">发送键<br>--dsw-alias-button-info-fill</div>
+        </div>
+        <div class="item">
+          <div class="sample"><div class="sess"><span class="sess-t">日落配色</span></div></div>
+          <div class="tok">--dsw-specific-sidebar-nav-item-active</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="spring"></div>
+  <div class="rule b"></div>
+
+  <!-- footer -->
+  <footer class="foot">
+    <p>Stock 预设可一键还原原厂配色</p>
+    <p class="files"><em>vice-coast.dark.json</em><i>/</i><em>vice-coast.light.json</em></p>
+  </footer>
+
+</div>
+</body>
+</html>

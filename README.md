@@ -1,5 +1,7 @@
 # 罪恶海岸 · Vice Coast
 
+**简体中文** · [English](README.en.md)
+
 > 一套给 [DeepSeek Harness](https://github.com/deepseek-ai)（DSH）工作台的日落配色主题 —— 取样自《侠盗猎车手 VI》官方主视觉：**画框紫、洋红→橙的日落渐变、暖纸白**。
 
 深色是**夜驾**（紫夜底 + 洋红信号），浅色是**明信片**（暖纸 + 淡紫面板）。字、字号、间距、圆角一个都不动 —— 只换颜色层。
@@ -97,6 +99,8 @@ node tools/gen-mark-sheet.mjs && node tools/shot.mjs mockups/mark-sheet.html moc
 ## 目录
 
 ```
+README.md / README.en.md 说明（中文 / English）
+LICENSE                  MIT
 palette.mjs              颜色真源 + WCAG 自检
 plugin/                  可安装的 bundle（package.json / patch / client.js / locale / icon）
 design/client.template.js 浏览器模块源码（build 时注入调色板、文案、标识）

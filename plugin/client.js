@@ -1,3 +1,4 @@
+/* built with logo: assets/logo-default.png (4450 B, a4527a967399) */
 window.__ModuleLoader__.load({
   id: 'dsh-vice-coast-theme',
   factory(require) {

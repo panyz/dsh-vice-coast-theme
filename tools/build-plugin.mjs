@@ -3,6 +3,7 @@
 //   + plugin/locale/*.json (copy) + brand-avatar/assets/avatar-128.png (the owner's logo)
 // Run: node tools/build-plugin.mjs
 import { readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { palettes } from '../palette.mjs';
 
@@ -56,6 +57,8 @@ fill('/* @@COPY@@ */', `/** Settings-row copy, one entry per locale. */\n    con
 out = out.replace('@@AVATAR@@', avatar);
 
 if (out.includes('@@')) throw new Error('unresolved template marker remains');
+const logoNote = `/* built with logo: ${logoPath} (${cutBytes.length} B, ${createHash('sha256').update(cutBytes).digest('hex').slice(0, 12)}) */`;
+out = out.replace('window.__ModuleLoader__.load({', `${logoNote}\nwindow.__ModuleLoader__.load({`);
 writeFileSync(root + 'plugin/client.js', out);
 execFileSync('node', ['--check', root + 'plugin/client.js'], { stdio: 'inherit' });
 console.log(`plugin/client.js — ${Object.keys(light).length} tokens × 2 schemes, ${LOCALES.length} locales, logo ${logoPath} (${(avatar.length / 1024).toFixed(0)} KiB base64)`);
